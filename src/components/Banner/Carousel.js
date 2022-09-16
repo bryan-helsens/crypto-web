@@ -101,9 +101,9 @@ const Carousel = () => {
             animationDuration={1500}
             disableDotsControls
             disableButtonsControls
-                responsive={responsive}
-                autoplay
-                items={items}
+            responsive={responsive}
+            items={items}
+            autoPlay
         />
     </div>
   )

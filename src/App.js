@@ -8,9 +8,9 @@ import { makeStyles } from 'tss-react/mui';
 const useStyles = makeStyles()(() => {
   return {
     App: {
-      backgroundColor: '#14161a',
+      backgroundColor: "#14161a",
       color: "white",
-      minHeight: "100vh"
+      minHeight: "100vh",
     }
   }
 })
