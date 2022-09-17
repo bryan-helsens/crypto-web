@@ -3,20 +3,18 @@ import './App.css';
 import Header from './components/Header'
 import Homepage from './Pages/HomePage'
 import Coinpage from './Pages/CoinPage'
-import { makeStyles } from 'tss-react/mui';
+import { makeStyles } from "@material-ui/core";
 
-const useStyles = makeStyles()(() => {
-  return {
-    App: {
-      backgroundColor: "#14161a",
-      color: "white",
-      minHeight: "100vh",
-    }
-  }
-})
+const useStyles = makeStyles(() => ({
+  App: {
+    backgroundColor: "#14161a",
+    color: "white",
+    minHeight: "100vh",
+  },
+}));
 
 function App() {
-  const { classes } = useStyles();
+  const classes = useStyles();
 
   return (
     <BrowserRouter>

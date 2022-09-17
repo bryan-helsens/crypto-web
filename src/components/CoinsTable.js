@@ -5,7 +5,7 @@ import { CryptoState } from '../CryptoContext'
 import { Container, createTheme, LinearProgress, TableCell, ThemeProvider } from '@material-ui/core';
 import { Table, TableBody, TableContainer, TableHead, TableRow, TextField, Typography } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import { makeStyles } from 'tss-react/mui';
+import { makeStyles } from '@material-ui/core'
 import { numberWithCommas } from './Banner/Carousel';
 import Pagination from "@material-ui/lab/Pagination";
 
@@ -18,24 +18,22 @@ const darkTheme = createTheme({
     },
   });
 
-const useStyles = makeStyles()(() => {
-    return {
-        row: {
-            color: "white",
-            backgroundColor: "#16171a",
-            cursor: "pointer",
-            "&:hover": {
-              backgroundColor: "#131111",
-            },
-            fontFamily: "Montserrat",
+const useStyles = makeStyles(() => ({
+    row: {
+        color: "white",
+        backgroundColor: "#16171a",
+        cursor: "pointer",
+        "&:hover": {
+            backgroundColor: "#131111",
         },
-        pagination: {
-            "& .MuiPaginationItem-root": {
-              color: "gold",
-            },
+        fontFamily: "Montserrat",
+    },
+    pagination: {
+        "& .MuiPaginationItem-root": {
+            color: "gold",
         },
-    }
-  })
+    },
+}))
 
 const CoinsTable = () => {
     const [coins, setCoins] = useState([])
@@ -44,7 +42,7 @@ const CoinsTable = () => {
     const [page, setPage] = useState(1)
 
     const { currency, symbol } = CryptoState()
-    const { classes } = useStyles();
+    const classes = useStyles();
 
     const navigate = useNavigate();
 

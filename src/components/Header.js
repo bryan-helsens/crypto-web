@@ -1,20 +1,18 @@
 import React from 'react'
 import { AppBar, Container, Toolbar, Typography, Select, MenuItem, ThemeProvider, createTheme } from "@material-ui/core"
-import { makeStyles } from 'tss-react/mui';
+import { makeStyles } from "@material-ui/core/styles";
 import { useNavigate } from "react-router-dom";
 import { CryptoState } from "../CryptoContext"
 
-const useStyles = makeStyles()(() => {
-    return {
-      title: {
-        flex: 1,
-        color: "gold",
-        fontFamily: "Montserrat",
-        fontWeight: "bold",
-        cursor: "pointer",
-      }
-    }
-})
+const useStyles = makeStyles(() => ({
+    title: {
+      flex: 1,
+      color: "gold",
+      fontFamily: "Montserrat",
+      fontWeight: "bold",
+      cursor: "pointer",
+    },
+}));
 
 const darkTheme = createTheme({
     palette: {
@@ -26,7 +24,7 @@ const darkTheme = createTheme({
 });
 
 const Header = () => {
-    const { classes } = useStyles();
+    const classes = useStyles();
     const navigate = useNavigate();
 
     const { currency, setCurrency } = CryptoState()
@@ -41,17 +39,13 @@ const Header = () => {
                     <Typography 
                         onClick={() => navigate('/')} 
                         className={classes.title}
-                        variant="h5"    
+                        variant="h6"    
                     >Crypto Hunter</Typography>
 
-                    <Select 
+                    <Select
                         variant="outlined"
-                        style={{
-                            width: 100,
-                            height: 40,
-                            marginRight: 15
-                        }}
                         value={currency}
+                        style={{ width: 100, height: 40, marginLeft: 15, overflow: 'hidden' }}
                         onChange={(e) => setCurrency(e.target.value)}
                     >
                         <MenuItem value={"EUR"}>EUR</MenuItem>

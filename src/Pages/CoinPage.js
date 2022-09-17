@@ -1,15 +1,13 @@
-import { Typography } from '@material-ui/core'
+import { Typography, makeStyles } from '@material-ui/core'
 import axios from 'axios'
 import React, { useState, useEffect} from 'react'
 import { useParams } from 'react-router-dom'
-import { makeStyles } from 'tss-react/mui';
 import CoinInfo from '../components/CoinInfo'
 import { SingleCoin } from '../config/api'
 import { CryptoState } from '../CryptoContext'
 import parse from 'html-react-parser';
 
-const useStyles = makeStyles()((theme) => {
-  return {
+const useStyles = makeStyles((theme) => ({
     container: {
       display: 'flex',
       [theme.breakpoints.down("md")] : {
@@ -29,18 +27,17 @@ const useStyles = makeStyles()((theme) => {
       borderRight: "2px solid grey"
     },
     description: {
-      width: "100%",
       fontFamily: "Montserrat",
       padding: 25,
       paddingBottom: 15,
       paddingTop: 0,
       textAlign: "justify",
+      lineHeight: 1.8
     }
-  }
-})
+}))
 
 const CoinPage = () => {
-  const { classes } = useStyles();
+  const classes = useStyles()
   const { id } = useParams()
   const [coin, setCoin] = useState()
 
@@ -86,18 +83,11 @@ const CoinPage = () => {
 
         <Typography
           variant="subtitle2"
-          style={{
-            width: "100%",
-            fontFamily: "Montserrat",
-            padding: 25,
-            paddingBottom: 15,
-            paddingTop: 0,
-            textAlign: "justify",
-          }}
+          className={classes.description}
         >
           {
             coin ? (
-               parse(coin?.description.en.split('. ')[0])
+               parse(coin?.description.en.split('. ')[0] + ".")
             ) : (
               <></>
             )

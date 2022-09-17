@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { makeStyles } from 'tss-react/mui';
+import { makeStyles } from '@material-ui/core'
 import axios from 'axios'
 import { TrendingCoins } from '../../config/api'
 import { CryptoState } from '../../CryptoContext'
@@ -7,14 +7,13 @@ import { useEffect } from 'react';
 import AliceCarousel from 'react-alice-carousel';
 import { Link } from '@mui/material';
 
-const useStyles = makeStyles()(() => {
-    return {
-      carousel: {
+const useStyles = makeStyles(() => ({
+    carousel: {
         height: "50%",
         display: "flex",
         alignItems: "center"
-      },
-      carouselItem: {
+    },
+    carouselItem: {
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
@@ -22,9 +21,8 @@ const useStyles = makeStyles()(() => {
         textTransform: "uppercase",
         color: "white",
         textDecoration: "none"
-      },
-    }
-  })
+    },
+}))
 
 export function numberWithCommas(x) {
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
@@ -32,7 +30,7 @@ export function numberWithCommas(x) {
 
 const Carousel = () => {
     const [trending, setTrending] = useState([])
-    const { classes } = useStyles();
+    const classes = useStyles();
 
     const { currency, symbol } = CryptoState()
 
@@ -42,7 +40,7 @@ const Carousel = () => {
         setTrending(data)
     }
 
-    console.log(trending);
+    console.log(trending, "trendings");
 
     useEffect(() => {
         fetchTrendingCoins()
