@@ -1,0 +1,4 @@
+- voeg optie toe op chart van 1 uur
+- de percentage weergeven bij chart
+- huidige percentage bij info over coin
+- code in verschillende componenten verdelen

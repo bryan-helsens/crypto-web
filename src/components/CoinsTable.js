@@ -12,28 +12,32 @@ import Pagination from "@material-ui/lab/Pagination";
 const darkTheme = createTheme({
     palette: {
       primary: {
-        main: "#fff",
+        main: "#0000",
       },
       type: "dark",
     },
   });
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles({
     row: {
-        color: "white",
         backgroundColor: "#16171a",
         cursor: "pointer",
         "&:hover": {
-            backgroundColor: "#131111",
+          backgroundColor: "#131111",
         },
         fontFamily: "Montserrat",
-    },
-    pagination: {
+      },
+      pagination: {
         "& .MuiPaginationItem-root": {
-            color: "gold",
+          color: "gold",
         },
-    },
-}))
+      },
+      notchedOutline: {
+        borderWidth: "1px",
+        borderColor: "white !important"
+      }
+})
+  
 
 const CoinsTable = () => {
     const [coins, setCoins] = useState([])
@@ -67,7 +71,6 @@ const CoinsTable = () => {
             coin.symbol.toLowerCase().includes(search.toLowerCase())
         ))
     }
-    
 
   return (
     <ThemeProvider theme={darkTheme}>
@@ -84,6 +87,11 @@ const CoinsTable = () => {
                 label="Search for a Crypto Currency..." 
                 InputLabelProps={{ style: {color: "white"}}}
                 variant="outlined"
+                InputProps={{
+                    classes: {
+                      notchedOutline: classes.notchedOutline
+                    }
+                  }}
                 style={{ marginBottom: 20, width: '100%', color: "white" }}
                 onChange={(e) => setSearch(e.target.value)}
             />

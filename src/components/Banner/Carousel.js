@@ -7,7 +7,7 @@ import { useEffect } from 'react';
 import AliceCarousel from 'react-alice-carousel';
 import { Link } from '@mui/material';
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles((theme) => ({
     carousel: {
         height: "50%",
         display: "flex",
@@ -20,7 +20,6 @@ const useStyles = makeStyles(() => ({
         cursor: "pointer",
         textTransform: "uppercase",
         color: "white",
-        textDecoration: "none"
     },
 }))
 
@@ -44,7 +43,7 @@ const Carousel = () => {
 
     useEffect(() => {
         fetchTrendingCoins()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [currency])
 
     const items = trending.map((coin) => {
