@@ -34,7 +34,7 @@ const useStyles = makeStyles({
       },
       notchedOutline: {
         borderWidth: "1px",
-        borderColor: "white !important"
+        borderColor: "gray !important"
       }
 })
   
