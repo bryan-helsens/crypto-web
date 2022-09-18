@@ -75,6 +75,8 @@ const CoinPage = () => {
     setCoin(data)
   }
 
+  let profit = coin?.market_data.price_change_percentage_24h >= 0;
+
   console.log(coin);
 
   useEffect(() => {
@@ -145,6 +147,17 @@ const CoinPage = () => {
             >
               {symbol}{" "} 
               {numberWithCommas(coin?.market_data.current_price[currency.toLowerCase()])}
+              <span
+                  align='right'
+                  style={{
+                      color: profit > 0 ? 'rgb(14, 203, 129)' : 'red',
+                      fontWeight: 500
+                  }}
+              >
+                {" "}
+                {profit && "+"}
+                {coin?.market_data.price_change_percentage_24h.toFixed(2)}%
+              </span>
             </Typography>
           </span>
 

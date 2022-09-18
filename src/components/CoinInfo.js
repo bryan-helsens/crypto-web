@@ -1,6 +1,6 @@
 import axios from 'axios'
 import React, { useState, useEffect } from 'react'
-import { CircularProgress, createTheme, ThemeProvider } from "@material-ui/core"
+import { CircularProgress, createTheme, Table, TableBody, TableCell, TableHead, TableRow, ThemeProvider } from "@material-ui/core"
 import { CryptoState } from "../CryptoContext"
 import { HistoricalChart } from '../config/api'
 import { makeStyles } from "@material-ui/core/styles";
@@ -35,11 +35,17 @@ const useStyles = makeStyles((theme) => ({
       paddingTop: 0,
     },
   },
+  percentageTable: {
+    marginTop: 20,
+    padding: 20,
+  }
 }))
 
 const CoinInfo = ({ coin }) => {
   const [historicData, setHistoricData] = useState()
   const [days, setDays] = useState(1)
+
+  console.log(days);
 
   const { currency, symbol } = CryptoState()
   const classes = useStyles();
@@ -50,6 +56,10 @@ const CoinInfo = ({ coin }) => {
   }
 
   console.log(historicData);
+
+  const calculateProfit = (value) => {
+    return value >= 0
+  }
 
   useEffect(() => {
     fetchHistoricData()
@@ -77,7 +87,7 @@ const CoinInfo = ({ coin }) => {
                       date.getHours() > 12
                         ? `${date.getHours() - 12}:${date.getMinutes()} PM`
                         : `${date.getHours()}:${date.getMinutes()} AM`;
-                    return days === 1 ? time : date.toLocaleDateString();
+                    return (days <= 1) ? time : date.toLocaleDateString();
                   }),
 
 
@@ -131,6 +141,59 @@ const CoinInfo = ({ coin }) => {
             </>
           )
         }
+
+
+        <Table className={classes.percentageTable}>
+          <TableHead style={{ backgroundColor: "#EEBC1D" }}>
+          <TableRow>
+              {chartDays.map((head) => (
+                head.data ? (
+                  <TableCell
+                      style={{
+                          color: "black",
+                          fontWeight: "700",
+                          fontFamily: "Montserrat",
+                      }}
+                      key={head.value}
+                      align="center"
+                  >
+                      {head.label}
+                  </TableCell>) : 
+                  (
+                    <></>
+                  )
+              ))}
+          </TableRow>
+          </TableHead>
+
+          <TableBody>
+            {console.log(coin.market_data)}
+            <TableRow>
+            {chartDays.map((head) => {
+              let time = head.data;
+
+              return (
+                head.data ? (
+                  <TableCell
+                      style={{
+                          fontWeight: 500,
+                          fontFamily: "Montserrat",
+                          border: "1px solid gray",
+                          color: coin.market_data[time][currency.toLowerCase()] > 0 ? 'rgb(14, 203, 129)' : 'red',
+                      }}
+                      align="center"
+                  >
+                    {calculateProfit(coin.market_data[time][currency.toLowerCase()]) && "+"}
+                    {coin.market_data[time][currency.toLowerCase()].toFixed(1)} %
+                  </TableCell>) : 
+                  (
+                    <></>
+                  )
+              )
+              })}
+            </TableRow>
+          </TableBody>
+        </Table>
 
       </div>
     </ThemeProvider>

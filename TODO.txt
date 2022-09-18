@@ -1,4 +1,4 @@
-- voeg optie toe op chart van 1 uur
-- de percentage weergeven bij chart
-- huidige percentage bij info over coin
+- voeg optie toe op chart van 1 uur DONE
+- de percentage weergeven bij chart DONE
+- huidige percentage bij info over coin DONE
 - code in verschillende componenten verdelen
