@@ -2,3 +2,9 @@
 - de percentage weergeven bij chart DONE
 - huidige percentage bij info over coin DONE
 - code in verschillende componenten verdelen
+
+- weergeven van de hoogste stijgers en dalers
+- display lowest and highest price in 24h (range)
+
+
+- put all firebaseConfig data in .env file
