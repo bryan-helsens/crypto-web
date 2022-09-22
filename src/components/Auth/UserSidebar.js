@@ -14,6 +14,8 @@ const useStyles = makeStyles((theme) => ({
         display: "flex",
         flexDirection: "column",
         fontFamily: "monospace",
+        backgroundColor: theme.palette.background.paper,
+        color: "white",
     },
     profile: {
         flex: 1,

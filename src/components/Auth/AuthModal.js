@@ -8,6 +8,10 @@ import { AppBar, Tab, Tabs } from '@material-ui/core';
 import { makeStyles } from "@material-ui/core/styles";
 import Login from './Login';
 import Signup from './Signup';
+import GoogleButton from "react-google-button";
+import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
+import { auth } from '../../firebase';
+import { CryptoState } from '../../CryptoContext';
 
 const useStyles = makeStyles((theme) => ({
   modal: {
@@ -20,6 +24,7 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: theme.palette.background.paper,
     color: "white",
     borderRadius: 10,
+    zIndex: 1
   },
   google: {
     padding: 24,
@@ -45,6 +50,28 @@ const AuthModal = () => {
     setValue(newValue);
   };
 
+  const { setAlert } = CryptoState()
+  const googleProvider = new GoogleAuthProvider()
+
+  const signInWithGoogle = () => {
+    signInWithPopup(auth, googleProvider).then(res => {
+      setAlert({
+        open: true,
+        message: `Sign Up Successful. Welcome ${res.user.email}`,
+        type: "success"
+      })
+
+      handleClose()
+    }).catch(error => {
+      setAlert({
+        open: true,
+        message: error.message,
+        type: "error"
+      })
+      return;
+    })
+  }
+
   return (
 <div>
       <Button
@@ -53,6 +80,7 @@ const AuthModal = () => {
           width: 85,
           height: 40,
           backgroundColor: "#EEBC1D",
+          color: "#000"
         }}
         onClick={handleOpen}
       >
@@ -92,6 +120,15 @@ const AuthModal = () => {
           
             {value === 0 && <Login handleClose={handleClose} />}
             {value === 1 && <Signup handleClose={handleClose} />}
+
+            <Box className={classes.google}>
+              <span>OR</span>
+              <GoogleButton
+                style={{ width: "100%", outline: "none" }}
+                onClick={signInWithGoogle}
+              />
+            </Box>
+
           </Box>
         </Fade>
       </Modal>
