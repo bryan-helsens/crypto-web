@@ -4,6 +4,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import { useNavigate } from "react-router-dom";
 import { CryptoState } from "../CryptoContext"
 import AuthModal from './Auth/AuthModal';
+import UserSidebar from './Auth/UserSidebar';
 
 const useStyles = makeStyles(() => ({
     title: {
@@ -28,7 +29,7 @@ const Header = () => {
     const classes = useStyles();
     const navigate = useNavigate();
 
-    const { currency, setCurrency } = CryptoState()
+    const { currency, setCurrency, user } = CryptoState()
 
     console.log(currency);
     
@@ -46,14 +47,14 @@ const Header = () => {
                     <Select
                         variant="outlined"
                         value={currency}
-                        style={{ width: 100, height: 40, marginLeft: 15, overflow: 'hidden' }}
+                        style={{ width: 100, height: 40, marginRight: 15, overflow: 'hidden' }}
                         onChange={(e) => setCurrency(e.target.value)}
                     >
                         <MenuItem value={"EUR"}>EUR</MenuItem>
                         <MenuItem value={"USD"}>USD</MenuItem>
                     </Select>
 
-                    <AuthModal />
+                    { user ? <UserSidebar /> : <AuthModal /> }
                 </Toolbar>
             </Container>
         </AppBar>

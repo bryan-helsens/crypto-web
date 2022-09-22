@@ -4,7 +4,6 @@ import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import Fade from '@mui/material/Fade';
 import Button from '@mui/material/Button';
-import { TabPanel } from '@material-ui/lab';
 import { AppBar, Tab, Tabs } from '@material-ui/core';
 import { makeStyles } from "@material-ui/core/styles";
 import Login from './Login';
@@ -53,7 +52,6 @@ const AuthModal = () => {
         style={{
           width: 85,
           height: 40,
-          marginLeft: 15,
           backgroundColor: "#EEBC1D",
         }}
         onClick={handleOpen}
