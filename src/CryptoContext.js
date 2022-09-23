@@ -2,7 +2,7 @@ import axios from 'axios';
 import { onAuthStateChanged } from 'firebase/auth';
 import { doc, onSnapshot } from 'firebase/firestore';
 import React, { useState, useEffect, useContext, createContext } from 'react'
-import { CoinList } from './config/api';
+import { AllCoins, CoinList } from './config/api';
 import { auth, db } from './firebase';
 
 const Crypto = createContext();

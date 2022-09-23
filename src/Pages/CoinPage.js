@@ -12,22 +12,22 @@ import { db } from '../firebase'
 
 const useStyles = makeStyles((theme) => ({
     container: {
-      display: 'flex',
-      [theme.breakpoints.down("md")] : {
-        flexDirection: 'column',
-        alignItems: 'center',
-      } 
+      display: "flex",
+      [theme.breakpoints.down("md")]: {
+        flexDirection: "column",
+        alignItems: "center",
+      },
     },
     sidebar: {
       width: "30%",
-      [theme.breakpoints.down("md")] : {
+      [theme.breakpoints.down("md")]: {
         width: "100%",
       },
       display: "flex",
-      flexDirection: 'column',
-      alignItems: 'center',
+      flexDirection: "column",
+      alignItems: "center",
       marginTop: 25,
-      borderRight: "2px solid grey"
+      borderRight: "2px solid grey",
     },
     heading: {
       fontWeight: "bold",
@@ -35,29 +35,25 @@ const useStyles = makeStyles((theme) => ({
       fontFamily: "Montserrat",
     },
     description: {
+      width: "100%",
       fontFamily: "Montserrat",
       padding: 25,
       paddingBottom: 15,
       paddingTop: 0,
       textAlign: "justify",
-      lineHeight: 1.8
     },
     marketData: {
       alignSelf: "start",
       padding: 25,
       paddingTop: 10,
       width: "100%",
-      // making responsive
-      [theme.breakpoints.down('md')]: {
+      [theme.breakpoints.down("md")]: {
         display: "flex",
-        justifyContent: "space-around",
-      },
-      [theme.breakpoints.down('sm')]: {
-        flexDirection: 'column',
+        flexDirection: "column",
         alignItems: "center",
       },
-      [theme.breakpoints.down('xs')]: {
-        alignItems: "start"
+      [theme.breakpoints.down("xs")]: {
+        alignItems: "start",
       },
     }
 }))

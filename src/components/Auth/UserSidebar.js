@@ -122,6 +122,10 @@ const UserSidebar = () => {
     toggleDrawer()
   }
 
+  const profit = (coinPercentage) => {
+    return coinPercentage >= 0;
+  }
+
   return (
     <div>
       {['right'].map((anchor) => (
@@ -175,15 +179,34 @@ const UserSidebar = () => {
                             return (
                               <div className={classes.coin}>
                                 <span>{ coin.name }</span>
-                                <span style={{ display: "flex", gap: 8 }}>
-                                  {symbol}
-                                  {numberWithCommas(coin.current_price.toFixed(2))}
+
+                                <div style={{ 
+                                  display: "flex", 
+                                  flexDirection: "column", 
+                                  alignItems: "end", 
+                                  float: "right", 
+                                  justifyContent: "space-around", 
+                                  width: "65%" }}
+                                >
+                                  <span>
+                                    {symbol}
+                                    {numberWithCommas(coin.current_price.toFixed(2))}
+                                  </span>
+                                  <span
+                                    style={{
+                                      color: profit(coin.price_change_percentage_24h) > 0 ? 'green' : 'red',
+                                    }}
+                                  >
+                                    {profit(coin.price_change_percentage_24h) && "+"}
+                                    {coin.price_change_percentage_24h.toFixed(2)}%
+                                  </span>
+
+                                </div>
                                   <AiFillDelete
                                     style={{ cursor: "pointer" }}
                                     fontSize="16"
                                     onClick={() => removeFromWatchlist(coin)}
                                   />
-                                </span>
                               </div>
                             )
                         })}
