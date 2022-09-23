@@ -19,6 +19,26 @@ const CryptoContext = ({ children }) => {
       type: "success",
     })
     const [watchlist, setWatchlist] = useState([])
+    const [allCoins, setAllCoins] = useState([])
+    const [myCoins, setMyCoins] = useState([])
+
+    useEffect(() => {
+      if (user) {
+        const coinRef = doc(db, "my_coins", user.uid)
+
+        let unsubscribe = onSnapshot(coinRef, coin => {
+          if (coin.exists()){
+            console.log(coin.data().coins);
+            setMyCoins(coin.data().coins)
+          }else{
+            console.log("You don't have any coins");
+          }
+        })
+        return () => {
+          unsubscribe()
+        }
+      }
+    }, [user])
 
     useEffect(() => {
       if (user) {
@@ -52,7 +72,15 @@ const CryptoContext = ({ children }) => {
 
       setCoins(data)
       setLoading(false)
-  }
+    }
+
+    const fetchAllCoins = async () => {
+      setLoading(true)
+      const { data } = await axios.get(AllCoins(currency))
+
+      setAllCoins(data)
+      setLoading(false)
+    }
 
     useEffect(() => {
         if (currency === "EUR") setSymbol('€');
@@ -61,7 +89,7 @@ const CryptoContext = ({ children }) => {
 
   return (
     <Crypto.Provider value={{ 
-      currency, setCurrency, symbol, coins, loading, fetchCoins, alert, setAlert, user, watchlist,
+      currency, setCurrency, symbol, coins, loading, fetchCoins, alert, setAlert, user, watchlist, fetchAllCoins, allCoins, myCoins
     }}>
         {children}
     </Crypto.Provider>

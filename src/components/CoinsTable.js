@@ -10,7 +10,7 @@ import Pagination from "@material-ui/lab/Pagination";
 const darkTheme = createTheme({
     palette: {
       primary: {
-        main: "#0000",
+        main: "#000",
       },
       type: "dark",
     },
@@ -24,16 +24,16 @@ const useStyles = makeStyles({
           backgroundColor: "#131111",
         },
         fontFamily: "Montserrat",
-      },
-      pagination: {
+    },
+    pagination: {
         "& .MuiPaginationItem-root": {
-          color: "gold",
+            color: "gold",
         },
-      },
-      notchedOutline: {
+    },
+    notchedOutline: {
         borderWidth: "1px",
-        borderColor: "gray !important"
-      }
+        borderColor: "gray !important",
+    },
 })
   
 
@@ -71,14 +71,17 @@ const CoinsTable = () => {
 
             <TextField 
                 label="Search for a Crypto Currency..." 
-                InputLabelProps={{ style: {color: "white"}}}
+                InputLabelProps={{ style: {color: "white" } }}
                 variant="outlined"
                 InputProps={{
                     classes: {
-                      notchedOutline: classes.notchedOutline
+                      notchedOutline: classes.notchedOutline,
+                    },
+                    style: {
+                        color: "white"
                     }
-                  }}
-                style={{ marginBottom: 20, width: '100%', color: "white" }}
+                }}
+                style={{ marginBottom: 20, width: '100%' }}
                 onChange={(e) => setSearch(e.target.value)}
             />
 
