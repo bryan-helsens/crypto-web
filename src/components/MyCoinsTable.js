@@ -73,7 +73,7 @@ const MyCoinsTable = () => {
     const classes = useStyles();
     const navigate = useNavigate();
 
-    const { loading, coins, symbol, fetchAllCoins, allCoins, currency, myCoins, user, setAlert } = CryptoState()
+    const { loading, symbol, fetchAllCoins, allCoins, currency, myCoins } = CryptoState()
 
     useEffect(() => {
         fetchAllCoins()
@@ -81,7 +81,7 @@ const MyCoinsTable = () => {
     }, [currency])
 
     const handleSearch = () => {
-        return coins.filter((coin) => (
+        return myCoins.filter((coin) => (
             coin.name.toLowerCase().includes(search.toLowerCase()) || 
             coin.symbol.toLowerCase().includes(search.toLowerCase())
         ))
@@ -151,7 +151,7 @@ const MyCoinsTable = () => {
 
                             <TableBody>
                                 {
-                                    myCoins.map(row => {
+                                    handleSearch().map(row => {
 
                                         let coin = allCoins?.filter((coin) => (
                                             coin.name.toLowerCase().includes(row.name.toLowerCase()) ||
@@ -210,7 +210,7 @@ const MyCoinsTable = () => {
                                                 <TableCell 
                                                     align='right'
                                                     style={{
-                                                        color: row.bought <= (row.amount * coin?.current_price) ? 'rgb(14, 203, 129)' : 'red',
+                                                        color: row.bought <= (row.amount * coin?.current_price) ? 'rgb(14, 203, 129)' : "red",
                                                         fontWeight: 500,
                                                         fontSize: "1.2rem"
                                                     }}

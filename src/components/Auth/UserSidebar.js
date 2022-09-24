@@ -8,6 +8,7 @@ import { auth, db } from '../../firebase';
 import { numberWithCommas } from '../Banner/Carousel';
 import { AiFillDelete } from 'react-icons/ai'
 import { doc, setDoc } from 'firebase/firestore';
+import { Navigate, useNavigate } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
     container: {
@@ -19,6 +20,7 @@ const useStyles = makeStyles((theme) => ({
         fontFamily: "monospace",
         backgroundColor: theme.palette.background.paper,
         color: "white",
+        overflowX: "hidden",
     },
     profile: {
         flex: 1,
@@ -29,17 +31,17 @@ const useStyles = makeStyles((theme) => ({
         height: "92%",
     },
     picture: {
-        width: 200,
-        height: 200,
+        width: 150,
+        height: 150,
         cursor: "pointer",
         backgroundColor: "#EEBC1D",
         objectFit: "contain",
     },
-    logout: {
-        height: "8%",
+    button: {
+        height: "5%",
         width: "100%",
         backgroundColor: "#EEBC1D",
-        marginTop: 20,
+        marginTop: 10,
     },
     watchlist: {
         flex: 1,
@@ -74,6 +76,7 @@ const UserSidebar = () => {
 
   const { user, setAlert, watchlist, coins, symbol } = CryptoState()
   const classes = useStyles();
+  const navigate = useNavigate();
 
   const toggleDrawer = (anchor, open) => (event) => {
     if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
@@ -120,6 +123,11 @@ const UserSidebar = () => {
     })
 
     toggleDrawer()
+  }
+
+  const navigateMyCoins = () => {
+    navigate("/my_coins")
+
   }
 
   const profit = (coinPercentage) => {
@@ -214,9 +222,18 @@ const UserSidebar = () => {
                     </div>
                 </div>
 
+                
                 <Button
                     variant="contained"
-                    className={classes.logout}
+                    className={classes.button}
+                    onClick={navigateMyCoins}
+                >
+                    My Coins
+                </Button>
+
+                <Button
+                    variant="contained"
+                    className={classes.button}
                     onClick={logOut}
                 >
                     Log Out
