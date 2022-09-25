@@ -1,4 +1,5 @@
 import { Button, Container, createTheme, LinearProgress, makeStyles, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, ThemeProvider, Typography } from '@material-ui/core'
+import { Pagination } from '@material-ui/lab';
 import { doc, setDoc } from 'firebase/firestore';
 import React, { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom';
@@ -16,37 +17,7 @@ const darkTheme = createTheme({
     },
 });
 
-let data = [
-    {
-        id: 1,
-        name: "Ethereum",
-        symbol: "ETH",
-        bought: 265.00,
-        amount: 0.1691478,
-    },
-    {
-        id: 2,
-        name: "Bitcoin",
-        symbol: "BTC",
-        bought: 100.00,
-        amount: 0.00453769,
-    },{
-        id: 3,
-        name: "ApeCoin",
-        symbol: "APE",
-        bought: 30.00,
-        amount: 4.8996407,
-    },
-    {
-        id: 4,
-        name: "PancakeSwap",
-        symbol: "CAKE",
-        bought: 50.00,
-        amount: 12.50163604,
-    },
-];
-
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
     row: {
         backgroundColor: "#16171a",
         cursor: "pointer",
@@ -64,10 +35,39 @@ const useStyles = makeStyles({
         borderWidth: "1px",
         borderColor: "gray !important",
     },
-})
+    search: {
+        width: "90%",
+        [theme.breakpoints.down("md")]: {
+            width: "88%"
+        },
+        [theme.breakpoints.down("sm")]: {
+            width: "100%",
+            marginBottom: 10
+        },
+    },
+    search_add: {
+        display: 'flex', 
+        alignItems: "center", 
+        justifyContent: "space-between", 
+        flexDirection: 'row', 
+        marginBottom: 20, 
+        width: "100%",
+        [theme.breakpoints.down("sm")]: {
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+        },
+    },
+    pagination: {
+        "& .MuiPaginationItem-root": {
+            color: "gold",
+        },
+    },
+}))
 
 const MyCoinsTable = () => {
     const [search, setSearch] = useState("")
+    const [page, setPage] = useState(1)
     const rows = ["Coin", "Bought", "Amount", "Coin Value", "Total Value", "Porfit/Loss"]
 
     const classes = useStyles();
@@ -104,7 +104,10 @@ const MyCoinsTable = () => {
             </Typography>
 
             
-            <div style={{ display: 'flex', alignItems: "center", justifyContent: "space-between", flexDirection: 'row', marginBottom: 20, width: "100%" }}>
+            <div 
+                style={{  }}
+                className={classes.search_add}    
+            >
                 <TextField 
                     label="Search for a Crypto Currency..." 
                     InputLabelProps={{ style: {color: "white" } }}
@@ -117,7 +120,7 @@ const MyCoinsTable = () => {
                             color: "white"
                         }
                     }}
-                    style={{ width: '90%' }}
+                    className={classes.search}
                     onChange={(e) => setSearch(e.target.value)}
                 />
 
@@ -151,7 +154,9 @@ const MyCoinsTable = () => {
 
                             <TableBody>
                                 {
-                                    handleSearch().map(row => {
+                                    handleSearch()
+                                    .slice((page - 1) * 10, (page - 1) * 10 + 10)
+                                    .map(row => {
 
                                         let coin = allCoins?.filter((coin) => (
                                             coin.name.toLowerCase().includes(row.name.toLowerCase()) ||
@@ -190,19 +195,19 @@ const MyCoinsTable = () => {
                                                         <span style={{ color: "darkgrey" }}>{row.name}</span>
                                                     </div>
                                                 </TableCell>
-                                                <TableCell align='right' style={{ fontSize: "1rem" }}>
+                                                <TableCell align='right'>
                                                     {symbol + " "}
                                                     {numberWithCommas(row.bought.toFixed(2))}
                                                 </TableCell>
-                                                <TableCell align='right' style={{ fontSize: "1rem" }}>
+                                                <TableCell align='right'>
                                                     {row.amount}
                                                     {" " + row.symbol}
                                                 </TableCell>
-                                                <TableCell align='right' style={{ fontSize: "1rem" }}>
+                                                <TableCell align='right'>
                                                     {symbol + " "}
                                                     {numberWithCommas(coin?.current_price.toFixed(2))}
                                                 </TableCell>
-                                                <TableCell align='right' style={{ fontSize: "1rem" }}>
+                                                <TableCell align='right'>
                                                     {symbol + " "}
                                                     {(row.amount * coin?.current_price).toFixed(2)}
                                                 </TableCell>
@@ -228,6 +233,21 @@ const MyCoinsTable = () => {
                     )
                 }
             </TableContainer>
+
+            <Pagination
+                count={(handleSearch()?.length / 10).toFixed(0)}
+                style={{
+                    padding: 20,
+                    width: "100%",
+                    display: "flex",
+                    justifyContent: "center",
+                }}
+                classes={{ ul: classes.pagination }}
+                onChange={(_, value) => {
+                    setPage(value);
+                    window.scroll(0, 450);
+                }}
+            />
         </Container>
     </ThemeProvider>
   )

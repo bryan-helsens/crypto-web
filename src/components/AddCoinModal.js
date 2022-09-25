@@ -17,7 +17,18 @@ const useStyles = makeStyles((theme) => ({
     },
     button: {
         backgroundColor: "#EEBC1D",
+        padding: 13.9, 
+        fontWeight: 500,
+
+      [theme.breakpoints.down("sm")]: {
+        width: '100%',
+      },
     },
+    container: {
+      [theme.breakpoints.down("sm")]: {
+        width: '100%',
+      },
+    }
 }))
 
 const AddCoinModal = () => {
@@ -34,12 +45,10 @@ const AddCoinModal = () => {
 
     
   return (
-    <div>
+    <div className={classes.container}>
         <Button
             variant="contained"
             style={{
-            padding: 15, 
-            height: "auto",
             color: "#000"
             }}
             className={classes.button}

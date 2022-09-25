@@ -1,16 +1,19 @@
-import { Box, Button, TextField } from '@material-ui/core'
+import { Box, Button, makeStyles, TextField } from '@material-ui/core'
+import Autocomplete from "@material-ui/lab/Autocomplete";
 import { doc, setDoc } from 'firebase/firestore'
 import React, { useState } from 'react'
 import { CryptoState } from '../../CryptoContext'
 import { db } from '../../firebase'
+  
 
 const AddCoin = ({ handleClose }) => {
     const [name, setName] = useState("")
     const [symbol, setSymbol] = useState("")
     const [bought, setBought] = useState(0)
     const [amount, setAmount] = useState(0)
+    const [selectedCoin, setSelectedCoin] = useState(null)
 
-    const { setAlert, currency, user, myCoins } = CryptoState()
+    const { setAlert, currency, user, myCoins, allCoins } = CryptoState()
 
     const handleSubmit = async () => {
         try {
@@ -66,6 +69,8 @@ const AddCoin = ({ handleClose }) => {
         }
     }
 
+    console.log(selectedCoin);
+
   return (
     <Box
         style={{
@@ -75,14 +80,25 @@ const AddCoin = ({ handleClose }) => {
             padding: "5%"
         }}
     >
-        <TextField 
-          variant="outlined"
-          type="text"
-          label="Enter Name (Bitcoin)"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          fullWidth
+
+        <Autocomplete
+            options={allCoins}
+            getOptionLabel={(option) => (option.name)}
+            variant="outlined"
+            fullWidth
+            onInputChange={(event, selectedCoin) => {
+                setSelectedCoin(selectedCoin);
+                setName(selectedCoin)
+                allCoins.filter((coin) => {
+
+                    if (coin.name === selectedCoin)
+                    setSymbol((coin.symbol).toUpperCase());
+                     
+                 })
+            }}
+            renderInput={params => <TextField {...params} label="Enter Name (Bitcoin)" />}
         />
+
         <TextField 
           variant="outlined"
           type="text"
