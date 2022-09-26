@@ -12,3 +12,9 @@ export const TrendingCoins = (currency) =>
 
 export const AllCoins = (currency) =>
   `https://api.coingecko.com/api/v3/coins/markets?vs_currency=${currency}&sparkline=false`;
+
+export const GetCoinData = (currency, name) =>
+  `https://api.coingecko.com/api/v3/coins/markets?vs_currency=${currency}&ids=${name}&sparkline=false`;
+
+export const GetAllCoins = () => 
+  `https://api.coingecko.com/api/v3/coins/list`;

@@ -2,7 +2,7 @@ import axios from 'axios';
 import { onAuthStateChanged } from 'firebase/auth';
 import { doc, onSnapshot } from 'firebase/firestore';
 import React, { useState, useEffect, useContext, createContext } from 'react'
-import { AllCoins, CoinList } from './config/api';
+import { AllCoins, CoinList, GetAllCoins, GetCoinData } from './config/api';
 import { auth, db } from './firebase';
 
 const Crypto = createContext();
@@ -21,6 +21,8 @@ const CryptoContext = ({ children }) => {
     const [watchlist, setWatchlist] = useState([])
     const [allCoins, setAllCoins] = useState([])
     const [myCoins, setMyCoins] = useState([])
+    const [getCoinData, setGetCoinData] = useState([])
+    const [getAllCoins, setGetAllCoins] = useState([])
 
     useEffect(() => {
       if (user) {
@@ -82,6 +84,23 @@ const CryptoContext = ({ children }) => {
       setLoading(false)
     }
 
+    const fetchGetCoinData = async (name) => {
+      setLoading(true)
+      const { data } = await axios.get(GetCoinData(currency, name))
+
+      setGetCoinData(data)
+      setLoading(false)
+    }
+
+    const fetchGetAllCoins = async () => {
+      setLoading(true)
+      const { data } = await axios.get(GetAllCoins())
+
+      setGetAllCoins(data)
+      setLoading(false)
+    }
+
+
     useEffect(() => {
         if (currency === "EUR") setSymbol('€');
         else if (currency === "USD") setSymbol('$');
@@ -89,7 +108,8 @@ const CryptoContext = ({ children }) => {
 
   return (
     <Crypto.Provider value={{ 
-      currency, setCurrency, symbol, coins, loading, fetchCoins, alert, setAlert, user, watchlist, fetchAllCoins, allCoins, myCoins
+      currency, setCurrency, symbol, coins, loading, fetchCoins, alert, setAlert, user, watchlist, fetchAllCoins, allCoins, myCoins, fetchGetCoinData, getCoinData,
+      fetchGetAllCoins, getAllCoins
     }}>
         {children}
     </Crypto.Provider>

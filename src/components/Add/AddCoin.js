@@ -1,4 +1,4 @@
-import { Box, Button, makeStyles, TextField } from '@material-ui/core'
+import { Box, Button, TextField } from '@material-ui/core'
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import { doc, setDoc } from 'firebase/firestore'
 import React, { useState } from 'react'
@@ -7,13 +7,14 @@ import { db } from '../../firebase'
   
 
 const AddCoin = ({ handleClose }) => {
+    const [id, setId] = useState("")
     const [name, setName] = useState("")
     const [symbol, setSymbol] = useState("")
     const [bought, setBought] = useState(0)
     const [amount, setAmount] = useState(0)
     const [selectedCoin, setSelectedCoin] = useState(null)
 
-    const { setAlert, currency, user, myCoins, allCoins } = CryptoState()
+    const { setAlert, currency, user, myCoins, getAllCoins } = CryptoState()
 
     const handleSubmit = async () => {
         try {
@@ -37,18 +38,18 @@ const AddCoin = ({ handleClose }) => {
             await setDoc(coinRef,{
                 coins: myCoins?[...myCoins, 
                     {
-                        id: name,
+                        id: id,
                         name: name,
                         symbol: symbol,
-                        bought: parseInt(bought),
+                        bought: parseFloat(bought),
                         amount: parseFloat(amount),
                     }
                 ]:[
                     {
-                        id: name,
+                        id: id,
                         name: name,
                         symbol: symbol,
-                        bought: parseInt(bought),
+                        bought: parseFloat(bought),
                         amount: parseFloat(amount),
                     }
                 ],
@@ -69,8 +70,6 @@ const AddCoin = ({ handleClose }) => {
         }
     }
 
-    console.log(selectedCoin);
-
   return (
     <Box
         style={{
@@ -82,21 +81,32 @@ const AddCoin = ({ handleClose }) => {
     >
 
         <Autocomplete
-            options={allCoins}
+            options={getAllCoins}
             getOptionLabel={(option) => (option.name)}
             variant="outlined"
             fullWidth
             onInputChange={(event, selectedCoin) => {
                 setSelectedCoin(selectedCoin);
                 setName(selectedCoin)
-                allCoins.filter((coin) => {
+                // eslint-disable-next-line array-callback-return
+                getAllCoins.filter((coin) => {
 
-                    if (coin.name === selectedCoin)
-                    setSymbol((coin.symbol).toUpperCase());
+                    if (coin.name === selectedCoin){
+                        setSymbol((coin.symbol).toUpperCase());
+                        setId(coin.id)
+                    }
                      
                  })
             }}
             renderInput={params => <TextField {...params} label="Enter Name (Bitcoin)" />}
+        />
+
+        <TextField 
+          variant="outlined"
+          type="text"
+          value={id}
+          style={{ visibility: "hidden", height: 0, width: 0 }}
+          onChange={(e) => setId(e.target.value)}
         />
 
         <TextField 

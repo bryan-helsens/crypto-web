@@ -1,10 +1,10 @@
-import { Button, Container, createTheme, LinearProgress, makeStyles, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, ThemeProvider, Typography } from '@material-ui/core'
+import { Container, createTheme, LinearProgress, makeStyles, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, ThemeProvider, Typography } from '@material-ui/core'
 import { Pagination } from '@material-ui/lab';
-import { doc, setDoc } from 'firebase/firestore';
+import axios from 'axios';
 import React, { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom';
+import { GetCoinData } from '../config/api';
 import { CryptoState } from '../CryptoContext';
-import { db } from '../firebase';
 import AddCoinModal from './AddCoinModal';
 import { numberWithCommas } from './Banner/Carousel';
 
@@ -58,40 +58,86 @@ const useStyles = makeStyles((theme) => ({
             alignItems: "center",
         },
     },
-    pagination: {
-        "& .MuiPaginationItem-root": {
-            color: "gold",
-        },
-    },
+    profit: {
+        paddingBottom: 20,
+        fontWeight: 500,
+        color: "#EEBC1D"
+    }
 }))
 
 const MyCoinsTable = () => {
     const [search, setSearch] = useState("")
     const [page, setPage] = useState(1)
+    const [coinsDataList, setCoinsDataList] = useState([])
+    const [TotalProfit, setTotalProfit] = useState(0)
     const rows = ["Coin", "Bought", "Amount", "Coin Value", "Total Value", "Porfit/Loss"]
 
     const classes = useStyles();
     const navigate = useNavigate();
 
-    const { loading, symbol, fetchAllCoins, allCoins, currency, myCoins } = CryptoState()
+    const { loading, symbol, fetchAllCoins, currency, myCoins, fetchGetAllCoins } = CryptoState()
+
 
     useEffect(() => {
         fetchAllCoins()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [currency])
-
-    const handleSearch = () => {
-        return myCoins.filter((coin) => (
-            coin.name.toLowerCase().includes(search.toLowerCase()) || 
-            coin.symbol.toLowerCase().includes(search.toLowerCase())
-        ))
-    }
+        fetchGetAllCoins()
+    }, [currency, myCoins])
 
     const calcProfit = (bought, valueNow) => {
         return valueNow - bought
     }
 
-    console.log(myCoins);
+    const fetchCoin = async (name) => {
+        const { data } = await axios.get(GetCoinData(currency, name))
+        return data
+      }
+
+ 
+    const combineLists = () => {
+        coinsDataList.forEach(coinInfo => {
+            myCoins.filter((coin) => {
+                if (coin.id.toLowerCase().includes(coinInfo.id.toLowerCase())) 
+                    coin.totalValue = parseFloat((coin.amount * coinInfo?.current_price)).toFixed(2)
+                    coin.profitOrLoss = parseFloat(calcProfit(coin.bought, coin.totalValue)).toFixed(2)
+            })
+        });
+
+        myCoins.sort((a, b) => b.profitOrLoss - a.profitOrLoss)
+        return
+    }
+
+    const getAllCoinNames = async () => {
+        let tmpList = ""
+        myCoins?.forEach(myCoin => {
+            tmpList += myCoin.id.toLowerCase().replace(/ /g,"-") + ","
+        });
+
+        let coinsList = await fetchCoin(tmpList) 
+        setCoinsDataList(coinsList)
+
+        combineLists()
+        calcuTotalProfitOrLoss()
+    }
+
+    const calcuTotalProfitOrLoss = async () => {
+        let sum = 0
+        await myCoins?.forEach(myCoin => {
+            sum += parseFloat(myCoin.profitOrLoss)
+        });
+
+        setTotalProfit((sum).toFixed(2))
+    }
+
+    if (myCoins !== undefined){
+        getAllCoinNames()
+    }
+
+    const handleSearch = () => {
+        return myCoins !== undefined ? myCoins.filter((coin) => (
+            coin.name.toLowerCase().includes(search.toLowerCase()) || 
+            coin.symbol.toLowerCase().includes(search.toLowerCase()) 
+        )) : []
+    }
 
   return (
     <ThemeProvider theme={darkTheme}>
@@ -105,7 +151,6 @@ const MyCoinsTable = () => {
 
             
             <div 
-                style={{  }}
                 className={classes.search_add}    
             >
                 <TextField 
@@ -126,6 +171,20 @@ const MyCoinsTable = () => {
 
                 <AddCoinModal />
             </div>
+
+
+            <Typography
+                variant="h6"
+                className={classes.profit}
+            >
+                Total Profit/Loss: 
+                <p
+                    style={{ color: TotalProfit >= 0 ? 'rgb(14, 203, 129)' : "red" }}
+                >
+                    {symbol + " "}
+                    {TotalProfit}
+                </p>
+            </Typography>
           
 
             <TableContainer>
@@ -158,8 +217,8 @@ const MyCoinsTable = () => {
                                     .slice((page - 1) * 10, (page - 1) * 10 + 10)
                                     .map(row => {
 
-                                        let coin = allCoins?.filter((coin) => (
-                                            coin.name.toLowerCase().includes(row.name.toLowerCase()) ||
+                                        let coin = coinsDataList.filter((coin) => (
+                                            coin.id.toLowerCase().includes(row.id.toLowerCase()) ||
                                             coin.symbol.toLowerCase().includes(row.symbol.toLowerCase())
                                         ))
                                         coin = coin[0]
@@ -180,9 +239,10 @@ const MyCoinsTable = () => {
                                                 >
                                                     <img 
                                                         src={coin?.image}
-                                                        alt={coin?.name}
-                                                        title={coin?.name}
+                                                        alt={row?.name}
+                                                        title={row?.name}
                                                         height="50"
+                                                        width="50"
                                                         style={{ marginBottom: 10 }}
                                                     />
                                                     <div
@@ -209,19 +269,19 @@ const MyCoinsTable = () => {
                                                 </TableCell>
                                                 <TableCell align='right'>
                                                     {symbol + " "}
-                                                    {(row.amount * coin?.current_price).toFixed(2)}
+                                                    {row.totalValue}
                                                 </TableCell>
 
                                                 <TableCell 
                                                     align='right'
                                                     style={{
-                                                        color: row.bought <= (row.amount * coin?.current_price) ? 'rgb(14, 203, 129)' : "red",
+                                                        color: row.profitOrLoss >= 0 ? 'rgb(14, 203, 129)' : "red",
                                                         fontWeight: 500,
                                                         fontSize: "1.2rem"
                                                     }}
                                                 >
                                                     {symbol + " "}
-                                                    {calcProfit(row.bought, (row.amount * coin?.current_price)).toFixed(2)}
+                                                    {row.profitOrLoss}
                                                 </TableCell>
                                    
                                             </TableRow>
@@ -235,7 +295,7 @@ const MyCoinsTable = () => {
             </TableContainer>
 
             <Pagination
-                count={(handleSearch()?.length / 10).toFixed(0)}
+                count={((handleSearch()?.length / 10) + 1).toFixed(0)}
                 style={{
                     padding: 20,
                     width: "100%",
