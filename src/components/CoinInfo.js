@@ -167,24 +167,23 @@ const CoinInfo = ({ coin }) => {
           </TableHead>
 
           <TableBody>
-            {console.log(coin.market_data)}
             <TableRow>
             {chartDays.map((head) => {
               let time = head.data;
 
               return (
-                head.data ? (
+                head.data && coin?.market_data[time][currency.toLowerCase()] !== undefined ? (
                   <TableCell
                       style={{
                           fontWeight: 500,
                           fontFamily: "Montserrat",
                           border: "1px solid gray",
-                          color: coin.market_data[time][currency.toLowerCase()] > 0 ? 'rgb(14, 203, 129)' : 'red',
+                          color: coin?.market_data[time][currency.toLowerCase()] >= 0 ? 'rgb(14, 203, 129)' : 'red',
                       }}
                       align="center"
                   >
-                    {calculateProfit(coin.market_data[time][currency.toLowerCase()]) && "+"}
-                    {coin.market_data[time][currency.toLowerCase()].toFixed(1)} %
+                    {calculateProfit(coin?.market_data[time][currency.toLowerCase()]) && "+"}
+                    {coin?.market_data[time][currency.toLowerCase()].toFixed(1)} %
                   </TableCell>) : 
                   (
                     <></>

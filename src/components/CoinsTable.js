@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core'
 import { numberWithCommas } from './Banner/Carousel';
 import Pagination from "@material-ui/lab/Pagination";
+import GainersAndLosers from './GainersAndLosers';
 
 const darkTheme = createTheme({
     palette: {
@@ -61,6 +62,7 @@ const CoinsTable = () => {
   return (
     <ThemeProvider theme={darkTheme}>
         <Container style={{ textAlign: 'center'}}>
+
             <Typography
                 variant="h4"
                 style={{ margin: 18, fontFamily: "Montserrat"}}
@@ -68,6 +70,11 @@ const CoinsTable = () => {
                 Cryptocurrency Prices by Market Cap
             </Typography>
 
+            {loading ? (
+                <LinearProgress style={{ backgroundColor: "gold" }} />
+            ):(
+                <GainersAndLosers /> 
+            )}
 
             <TextField 
                 label="Search for a Crypto Currency..." 
