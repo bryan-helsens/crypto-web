@@ -82,7 +82,8 @@ const CoinsTable = () => {
                     }
                 }}
                 style={{ marginBottom: 20, width: '100%' }}
-                onChange={(e) => setSearch(e.target.value)}
+                onChange={(e) => setSearch(e.target.value)
+                }
             />
 
             <TableContainer>
