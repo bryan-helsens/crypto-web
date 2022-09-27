@@ -1,5 +1,6 @@
 import { AppBar, Backdrop, Box, Button, Fade, makeStyles, Modal, Tab, Tabs } from '@material-ui/core'
-import React, { useState } from 'react'
+import React, { useState, useEffect} from 'react'
+import { CryptoState } from '../CryptoContext';
 import AddCoin from './Add/AddCoin';
 
 const useStyles = makeStyles((theme) => ({
@@ -36,13 +37,19 @@ const AddCoinModal = () => {
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
 
+    const { fetchGetAllCoins } = CryptoState()
+
     const classes = useStyles();
 
     const [value, setValue] = React.useState(0);
     const handleChange = (event, newValue) => {
         setValue(newValue);
-      };
+    };
 
+
+    useEffect(() => {
+      fetchGetAllCoins()
+    }, [])
     
   return (
     <div className={classes.container}>

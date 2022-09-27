@@ -75,13 +75,12 @@ const MyCoinsTable = () => {
     const classes = useStyles();
     const navigate = useNavigate();
 
-    const { loading, symbol, fetchAllCoins, currency, myCoins, fetchGetAllCoins } = CryptoState()
+    const { loading, symbol, fetchAllCoins, currency, myCoins } = CryptoState()
 
 
     useEffect(() => {
         fetchAllCoins()
-        fetchGetAllCoins()
-    }, [currency, myCoins])
+    }, [currency])
 
     const calcProfit = (bought, valueNow) => {
         return valueNow - bought
@@ -225,7 +224,7 @@ const MyCoinsTable = () => {
 
                                         return (
                                             <TableRow
-                                                onClick={() => navigate(`/coins/${coin.id}`)}
+                                                onClick={() => navigate(`/coins/${(row.name).toLowerCase()}`)}
                                                 className={classes.row}
                                                 key={row.name}
                                             >
