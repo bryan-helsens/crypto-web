@@ -1,10 +1,10 @@
 import { Container, makeStyles, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@material-ui/core'
-import React, { useState, useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { CryptoState } from '../CryptoContext'
 import { numberWithCommas } from './Banner/Carousel'
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
     row: {
         backgroundColor: "#16171a",
         cursor: "pointer",
@@ -13,7 +13,21 @@ const useStyles = makeStyles({
         },
         fontFamily: "Montserrat",
     },
-})
+    container: {
+        display: "flex", 
+        justifyContent: "space-around", 
+        marginBottom: 30,
+        [theme.breakpoints.down("sm")]: {
+            display: "block",
+        },
+    },
+    sub_container: {
+        width: "100%",
+        [theme.breakpoints.down("sm")]: {
+            paddingBottom: "2%"
+        },
+    }
+}))
 
 const GainersAndLosers = () => {
     const [gainers, setGainers] = useState([])
@@ -37,16 +51,16 @@ const GainersAndLosers = () => {
     }, [currency])
 
   return (
-    <div style={{ display: "flex", justifyContent: "space-around", marginBottom: 30}}>
-        <div style={{ width: "40%" }}>
+    <div className={classes.container}>
+        <div className={classes.sub_container}>
             <Typography
                 variant="h5"
-                style={{ margin: 18, fontFamily: "Montserrat"}}
+                style={{ fontFamily: "Montserrat", backgroundColor: 'rgb(238, 188, 29)', width: "99%", color: "#000", padding: "2%", fontWeight: 700}}
             >
-                Biggest Gainers
+                Gainers
             </Typography>
 
-            <TableContainer>
+            <TableContainer style={{ width:"99%" }}>
                 <Table> 
                     <TableBody>
                         {gainers
@@ -106,14 +120,15 @@ const GainersAndLosers = () => {
         </div>
        
 
-        <div style={{ width: "40%" }}>
+        <div className={classes.sub_container}>
             <Typography
                 variant="h5"
-                style={{ margin: 18, fontFamily: "Montserrat"}}
+                style={{ fontFamily: "Montserrat", backgroundColor: 'rgb(238, 188, 29)', width: "99%", color: "#000", padding: "2%", fontWeight: 700}}
             >
-                Biggest Losers
+                Losers
             </Typography>
-            <TableContainer>
+            
+            <TableContainer style={{ width:"99%" }}>
                     <Table> 
                         <TableBody>
                             {losers

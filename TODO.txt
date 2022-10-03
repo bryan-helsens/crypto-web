@@ -5,7 +5,6 @@ ALGEMEEN
 
 
 HOMEPAGE
-- weergeven van de hoogste stijgers en dalers
 
 
 COINPAGE

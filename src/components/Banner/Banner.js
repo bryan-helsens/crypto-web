@@ -1,8 +1,7 @@
-import { Container } from '@material-ui/core';
+import { Container, makeStyles } from '@material-ui/core';
 import { Typography } from '@mui/material';
-import React from 'react'
-import { makeStyles } from '@material-ui/core'
-import Carousel from './Carousel'
+import React from 'react';
+import Carousel from './Carousel';
 
 const useStyles = makeStyles(() => ({
     banner: {
@@ -39,7 +38,7 @@ const Banner = () => {
                         marginBottom: 15,
                         fontFamily: "Montserrat"
                     }}>
-                    Crypto Hunter
+                    My Crypto
                 </Typography>
 
                 <Typography 

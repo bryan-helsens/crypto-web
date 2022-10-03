@@ -1,8 +1,8 @@
-import React from 'react'
-import { AppBar, Container, Toolbar, Typography, Select, MenuItem, ThemeProvider, createTheme } from "@material-ui/core"
+import { AppBar, Container, createTheme, MenuItem, Select, ThemeProvider, Toolbar, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
+import React from 'react';
 import { useNavigate } from "react-router-dom";
-import { CryptoState } from "../CryptoContext"
+import { CryptoState } from "../CryptoContext";
 import AuthModal from './Auth/AuthModal';
 import UserSidebar from './Auth/UserSidebar';
 
@@ -30,8 +30,6 @@ const Header = () => {
     const navigate = useNavigate();
 
     const { currency, setCurrency, user } = CryptoState()
-
-    console.log(currency);
     
   return (
     <ThemeProvider theme={darkTheme}>
@@ -42,7 +40,9 @@ const Header = () => {
                         onClick={() => navigate('/')} 
                         className={classes.title}
                         variant="h6"    
-                    >Crypto Hunter</Typography>
+                    >
+                        My Crypto
+                    </Typography>
 
                     <Select
                         variant="outlined"
